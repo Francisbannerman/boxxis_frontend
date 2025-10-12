@@ -12,13 +12,13 @@
       data-slot="select-content"
       data-state="open"
     >
-      <SelectScrollUpButton v-if="showScrollUp" />
+      <selectScrollUpButton v-if="showScrollUp" />
       
       <div class="p-1">
         <slot />
       </div>
       
-      <SelectScrollDownButton v-if="showScrollDown" />
+      <selectScrollDownButton v-if="showScrollDown" />
     </div>
   </Teleport>
 </template>
@@ -27,8 +27,8 @@
 import { ref, computed, onMounted, onUnmounted, provide, inject } from 'vue'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import SelectScrollUpButton from './selectScrollUpButton.vue'
-import SelectScrollDownButton from './selectScrollDownButton.vue'
+import selectScrollUpButton from './selectScrollUpButton.vue'
+import selectScrollDownButton from './selectScrollDownButton.vue'
 
 function cn(...inputs) {
   return twMerge(clsx(inputs))
