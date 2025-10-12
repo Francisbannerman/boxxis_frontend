@@ -27,8 +27,8 @@
 import { ref, computed, onMounted, onUnmounted, provide, inject } from 'vue'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import SelectScrollUpButton from './SelectScrollUpButton.vue'
-import SelectScrollDownButton from './SelectScrollDownButton.vue'
+import SelectScrollUpButton from './selectScrollUpButton.vue'
+import SelectScrollDownButton from './selectScrollDownButton.vue'
 
 function cn(...inputs) {
   return twMerge(clsx(inputs))
