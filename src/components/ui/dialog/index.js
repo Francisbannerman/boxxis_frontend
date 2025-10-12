@@ -1,0 +1,11 @@
+// index.js - Export all components
+export { default as Dialog } from './dialog.vue'
+export { default as DialogClose } from './dialogClose.vue'
+export { default as DialogContent } from './dialogContent.vue'
+export { default as DialogDescription } from './dialogDescription.vue'
+export { default as DialogFooter } from './dialogFooter.vue'
+export { default as DialogHeader } from './dialogHeader.vue'
+export { default as DialogOverlay } from './dialogOverlay.vue'
+export { default as DialogPortal } from './dialogPortal.vue'
+export { default as DialogTitle } from './dialogTitle.vue'
+export { default as DialogTrigger } from './dialogTrigger.vue'

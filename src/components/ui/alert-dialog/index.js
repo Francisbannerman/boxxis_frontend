@@ -1,0 +1,12 @@
+// index.js - Export all components
+export { default as AlertDialog } from './alertDialog.vue'
+export { default as AlertDialogPortal } from './alertDialogPortal.vue'
+export { default as AlertDialogOverlay } from './alertDialogOverlay.vue'
+export { default as AlertDialogTrigger } from './alertDialogTrigger.vue'
+export { default as AlertDialogContent } from './alertDialogContent.vue'
+export { default as AlertDialogHeader } from './alertDialogHeader.vue'
+export { default as AlertDialogFooter } from './alertDialogFooter.vue'
+export { default as AlertDialogTitle } from './alertDialogTitle.vue'
+export { default as AlertDialogDescription } from './alertDialogDescription.vue'
+export { default as AlertDialogAction } from './alertDialogAction.vue'
+export { default as AlertDialogCancel } from './alertDialogCancel.vue'

@@ -1,0 +1,10 @@
+// index.js - Export all components
+export { default as Command } from './command.vue'
+export { default as CommandDialog } from './commandDialog.vue'
+export { default as CommandInput } from './commandInput.vue'
+export { default as CommandList } from './commandList.vue'
+export { default as CommandEmpty } from './commandEmpty.vue'
+export { default as CommandGroup } from './commandGroup.vue'
+export { default as CommandItem } from './commandItem.vue'
+export { default as CommandShortcut } from './commandShortcut.vue'
+export { default as CommandSeparator } from './commandSeparator.vue'
