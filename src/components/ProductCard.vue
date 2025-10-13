@@ -54,22 +54,22 @@
               v-for="i in 5"
               :key="i"
               :class="`text-xs ${
-                i <= Math.floor(product.rating) 
+                i <= Math.floor(product.rating = 5) 
                   ? 'text-yellow-400' 
                   : 'text-gray-300'
               }`"
             >
               ★
             </span>
-            <span class="text-xs text-muted-foreground ml-1">
+            <!-- <span class="text-xs text-muted-foreground ml-1">
               ({{ product.reviewCount }})
-            </span>
+            </span> -->
           </div>
         </div>
 
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
-            <span class="font-bold">${{ product.price }}</span>
+            <span class="font-bold">GH₵{{ product.price }}</span>
             <span 
               v-if="product.originalPrice"
               class="text-sm text-muted-foreground line-through"

@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import router from './router'
 import App from './App.vue'
 import './index.css'
+import { startTokenRefresh } from './utils/tokenRefresh'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -18,3 +19,5 @@ await authStore.initAuth()
 // Then install router and mount
 app.use(router)
 app.mount('#app')
+
+startTokenRefresh()

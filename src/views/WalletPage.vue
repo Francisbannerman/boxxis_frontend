@@ -271,6 +271,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../components/ui/dialog'
 import Badge from '../components/ui/badge.vue'
 import { walletService } from '../api/services/wallet'
+import paymentService from '../api/services/paymentService'
 import { useAuthStore } from '../store/auth'
 import { toast } from 'vue-sonner'
 
@@ -322,26 +323,91 @@ const fetchWallets = async () => {
 }
 
 const addFunds = async (amount) => {
-  if (!authStore.userId || !systemWallet.value) {
+  console.log('=== ADD FUNDS TO WALLET (Wallets Page) ===')
+  console.log('Amount:', amount)
+
+  if (!authStore.userId) {
+    toast.error('Please login to add funds')
+    return
+  }
+
+  if (!systemWallet.value) {
     toast.error('System wallet not found')
     return
   }
 
+  addingFunds.value = true
+
   try {
-    addingFunds.value = true
+    // Step 1: Call wallet topup API first
+    console.log('Step 1: Calling wallet topup API...')
+    const topupData = {
+      userId: authStore.userId,
+      amount: amount
+    }
     
-    // TODO: Implement your actual add funds API call
-    // await walletService.addFunds(authStore.userId, amount)
+    console.log('Topup data:', topupData)
+    const topupResponse = await walletService.topup(topupData)
+    console.log('Topup response:', topupResponse)
+
+    // Extract transaction or reference ID from topup response
+    const transactionRef = topupResponse.transactionId || 
+                          topupResponse.TransactionId || 
+                          topupResponse.data?.transactionId ||
+                          topupResponse.data?.TransactionId ||
+                          `WALLET-${authStore.userId}-${Date.now()}`
+
+    // Step 2: Create payment data
+    const now = new Date()
+    const walletId = systemWallet.value?.walletId || 'system-wallet'
     
-    // For now, update locally
-    systemWallet.value.systemBalance = (systemWallet.value.systemBalance || 0) + amount
-    toast.success(`₵${amount} added to your System Wallet!`)
-    
-    // Refresh wallets from server
-    await fetchWallets()
+    const paymentData = {
+      amount: amount,
+      description: `Add ₵${amount} to Boxxis Wallet - ${now.toLocaleString()}`,
+      themeId: walletId,
+      clientReference: transactionRef
+    }
+
+    console.log('Payment data:', paymentData)
+
+    // Step 3: Initiate payment with Hubtel
+    console.log('Step 2: Initiating payment...')
+    const paymentResponse = await paymentService.initiatePayment(paymentData)
+
+    console.log('Payment response:', paymentResponse)
+
+    // Extract checkout URL
+    const checkoutUrl = paymentResponse.checkoutUrl || 
+                       paymentResponse.data?.checkoutUrl
+
+    if (!checkoutUrl) {
+      throw new Error('Failed to get payment URL from payment response')
+    }
+
+    console.log('Payment URL:', checkoutUrl)
+
+    // Step 4: Show redirect message
+    toast.success(`Redirecting to Payment... 💳`, {
+      description: `Please complete your ₵${amount} payment to add funds to your wallet.`
+    })
+
+    console.log('Redirecting to:', checkoutUrl)
+
+    // Step 5: Redirect to Hubtel payment page
+    setTimeout(() => {
+      window.location.replace(checkoutUrl)
+    }, 1500)
+
   } catch (error) {
-    console.error('Failed to add funds:', error)
-    toast.error('Failed to add funds')
+    console.error('Failed to initiate payment:', error)
+    
+    const errorMessage = error.response?.data?.message || 
+                       error.message || 
+                       'Failed to initiate payment'
+    
+    toast.error('Payment Failed', {
+      description: errorMessage
+    })
   } finally {
     addingFunds.value = false
   }
@@ -353,8 +419,8 @@ const addCustomFunds = async () => {
     return
   }
 
-  await addFunds(customAmount.value)
   showAddFundsDialog.value = false
+  await addFunds(customAmount.value)
   customAmount.value = null
 }
 

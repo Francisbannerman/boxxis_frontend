@@ -3,7 +3,7 @@ import apiClient from '../client'
 export const userService = {
   async updateUsername(userId, username) {
     try {
-      const response = await apiClient.put('/Update/user', {
+      const response = await apiClient.put('/User/update', {
         userId,
         username
       })

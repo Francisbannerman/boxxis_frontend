@@ -1,3 +1,8 @@
+// ============================================
+// 1. UPDATE FOOTER COMPONENT WITH ROUTER LINKS
+// ============================================
+
+// Footer.vue (Updated)
 <template>
   <footer class="bg-muted/50 border-t mt-16">
     <div class="container mx-auto px-4 py-12">
@@ -10,13 +15,13 @@
             Quality imports, better deals than local Ghana markets.
           </p>
           <div class="flex space-x-2">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" @click="openLink('https://facebook.com')">
               <Facebook class="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" @click="openLink('https://twitter.com')">
               <Twitter class="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" @click="openLink('https://instagram.com')">
               <Instagram class="h-4 w-4" />
             </Button>
           </div>
@@ -26,10 +31,10 @@
         <div class="space-y-4">
           <h4 class="font-medium">Quick Links</h4>
           <ul class="space-y-2 text-sm">
-            <li><a href="#" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">About Us</a></li>
-            <li><a href="#" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Contact</a></li>
-            <li><a href="#" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">FAQs</a></li>
-            <li><a href="#" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Import Guide</a></li>
+            <li><router-link to="/about" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">About Us</router-link></li>
+            <li><router-link to="/contact" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Contact</router-link></li>
+            <li><router-link to="/faqs" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">FAQs</router-link></li>
+            <li><router-link to="/import-guide" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Import Guide</router-link></li>
           </ul>
         </div>
 
@@ -37,10 +42,10 @@
         <div class="space-y-4">
           <h4 class="font-medium">Customer Service</h4>
           <ul class="space-y-2 text-sm">
-            <li><a href="#" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Delivery Info</a></li>
-            <li><a href="#" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Quality Guarantee</a></li>
-            <li><a href="#" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Privacy Policy</a></li>
-            <li><a href="#" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Terms of Service</a></li>
+            <li><router-link to="/delivery-info" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Delivery Info</router-link></li>
+            <li><router-link to="/quality-guarantee" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Quality Guarantee</router-link></li>
+            <li><router-link to="/privacy-policy" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Privacy Policy</router-link></li>
+            <li><router-link to="/terms" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">Terms of Service</router-link></li>
           </ul>
         </div>
 
@@ -50,15 +55,28 @@
           <p class="text-sm text-muted-foreground">
             Subscribe to get special offers and latest updates.
           </p>
-          <div class="flex space-x-2">
+          <form @submit.prevent="subscribeNewsletter" class="flex space-x-2">
             <Input
+              v-model="newsletterEmail"
+              type="email"
               placeholder="Enter your email"
+              required
               class="flex-1 border-border focus:border-[#8E44AD] focus:ring-[#8E44AD]"
+              :disabled="isSubscribing"
             />
-            <Button size="icon" class="bg-[#A3E635] hover:bg-[#A3E635]/80 text-[#2d1b3d]">
-              <Mail class="h-4 w-4" />
+            <Button 
+              type="submit" 
+              size="icon" 
+              class="bg-[#A3E635] hover:bg-[#A3E635]/80 text-[#2d1b3d]"
+              :disabled="isSubscribing"
+            >
+              <Loader2 v-if="isSubscribing" class="h-4 w-4 animate-spin" />
+              <Mail v-else class="h-4 w-4" />
             </Button>
-          </div>
+          </form>
+          <p v-if="subscriptionMessage" :class="subscriptionSuccess ? 'text-green-600' : 'text-red-600'" class="text-xs">
+            {{ subscriptionMessage }}
+          </p>
         </div>
       </div>
 
@@ -69,15 +87,15 @@
           © 2024 Boxxis. All rights reserved.
         </p>
         <div class="flex space-x-6 text-sm">
-          <a href="#" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">
+          <router-link to="/privacy-policy" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">
             Privacy
-          </a>
-          <a href="#" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">
+          </router-link>
+          <router-link to="/terms" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">
             Terms
-          </a>
-          <a href="#" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">
+          </router-link>
+          <router-link to="/contact" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">
             Support
-          </a>
+          </router-link>
         </div>
       </div>
     </div>
@@ -85,10 +103,13 @@
 </template>
 
 <script>
-import { Facebook, Twitter, Instagram, Mail } from 'lucide-vue-next'
+import { ref } from 'vue'
+import { Facebook, Twitter, Instagram, Mail, Loader2 } from 'lucide-vue-next'
 import Button from './ui/button.vue'
 import Input from './ui/input.vue'
 import Separator from './ui/separator.vue'
+import { subscribeToNewsletter } from '@/api/services/newsletter'
+import { useAuthStore } from '@/store/auth'
 
 export default {
   name: 'Footer',
@@ -97,9 +118,55 @@ export default {
     Twitter,
     Instagram,
     Mail,
+    Loader2,
     Button,
     Input,
     Separator
+  },
+  setup() {
+    const authStore = useAuthStore()
+    const newsletterEmail = ref('')
+    const isSubscribing = ref(false)
+    const subscriptionMessage = ref('')
+    const subscriptionSuccess = ref(false)
+
+    const subscribeNewsletter = async () => {
+      isSubscribing.value = true
+      subscriptionMessage.value = ''
+
+      try {
+        const userId = authStore.user?.id || null
+        const username = authStore.user?.username || 'Guest'
+        
+        await subscribeToNewsletter({
+          userId,
+          username,
+          email: newsletterEmail.value
+        })
+
+        subscriptionSuccess.value = true
+        subscriptionMessage.value = 'Successfully subscribed to newsletter!'
+        newsletterEmail.value = ''
+      } catch (error) {
+        subscriptionSuccess.value = false
+        subscriptionMessage.value = error.message || 'Failed to subscribe. Please try again.'
+      } finally {
+        isSubscribing.value = false
+      }
+    }
+
+    const openLink = (url) => {
+      window.open(url, '_blank')
+    }
+
+    return {
+      newsletterEmail,
+      isSubscribing,
+      subscriptionMessage,
+      subscriptionSuccess,
+      subscribeNewsletter,
+      openLink
+    }
   }
 }
 </script>

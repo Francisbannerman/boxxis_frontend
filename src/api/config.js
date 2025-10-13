@@ -1,11 +1,13 @@
 // Base URL for all API calls
 // This will use environment variables or fallback to localhost
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://hammerhead-app-68j7i.ondigitalocean.app/api'
+// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5251/api'
+
 
 // Export configuration for axios
 export const config = {
   baseURL: API_BASE_URL,
-  timeout: 10000, // 10 seconds
+  timeout: 30000, // 10 seconds
   headers: {
     'Content-Type': 'application/json',
   }

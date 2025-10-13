@@ -36,6 +36,28 @@ export const walletService = {
     }
   },
 
+  // Topup wallet - CALL THIS BEFORE PAYMENT
+  async topup(data) {
+    try {
+      const payload = {
+        userId: data.userId,
+        amount: data.amount
+      }
+
+      console.log('Calling topup API:', payload)
+
+      const response = await apiClient.post('/Wallet/topup', payload)
+      
+      console.log('Topup API response:', response)
+
+      // Return the response data
+      return response.data || response
+    } catch (error) {
+      console.error('Error in wallet topup:', error)
+      throw this.handleError(error)
+    }
+  },
+
   /**
    * Get all non-system wallets (for manage wallets page)
    * @param {string} userId - User ID

@@ -1,3 +1,5 @@
+// Updated Wallet.vue with Payment Flow
+
 <template>
   <Popover v-model:open="isOpen" :class="mergedClassName">
     <PopoverTrigger as-child>
@@ -40,6 +42,7 @@
 
           <!-- Loading State -->
           <div v-else-if="loading" class="text-center py-8">
+            <div class="h-8 w-8 mx-auto border-4 border-[#8E44AD] border-t-transparent rounded-full animate-spin mb-4"></div>
             <p class="text-sm text-muted-foreground">Loading wallet...</p>
           </div>
 
@@ -64,9 +67,15 @@
                   :disabled="addingFunds"
                   class="border-[#A3E635] text-[#A3E635] hover:bg-[#A3E635] hover:text-[#2d1b3d]"
                 >
-                  +₵{{ amount }}
+                  <div v-if="addingFunds && selectedAmount === amount" class="flex items-center gap-1">
+                    <div class="h-3 w-3 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                  <span v-else>+₵{{ amount }}</span>
                 </Button>
               </div>
+              <p class="text-xs text-muted-foreground text-center mt-2">
+                You'll be redirected to Hubtel for secure payment
+              </p>
             </div>
 
             <div class="space-y-2">
@@ -114,6 +123,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import Badge from './ui/badge.vue'
 import LoginModal from './LoginModal.vue'
 import { walletService } from '../api/services/wallet'
+import paymentService from '../api/services/paymentService'
 import { useAuthStore } from '../store/auth'
 import { useRouter } from 'vue-router'
 import { useToast } from './ui/toast/use-toast'
@@ -154,6 +164,7 @@ export default {
     const isOpen = ref(false)
     const loading = ref(false)
     const addingFunds = ref(false)
+    const selectedAmount = ref(null)
     const systemWallet = ref(null)
     const showLoginModal = ref(false)
 
@@ -201,7 +212,7 @@ export default {
       }
     })
 
-    // Watch for popover open - close if not authenticated
+    // Watch for popover open
     watch(isOpen, async (newVal) => {
       if (newVal && !authStore.isAuthenticated) {
         // Popover will show login prompt
@@ -234,6 +245,9 @@ export default {
     }
 
     const addFunds = async (amount) => {
+      console.log('=== ADD FUNDS TO WALLET ===')
+      console.log('Amount:', amount)
+
       if (!userId.value) {
         toast({
           title: 'Error',
@@ -243,30 +257,92 @@ export default {
         return
       }
 
+      if (!authStore.isAuthenticated) {
+        openLoginModal()
+        return
+      }
+
+      addingFunds.value = true
+      selectedAmount.value = amount
+
       try {
-        addingFunds.value = true
+        // Step 1: Call wallet topup API first
+        console.log('Step 1: Calling wallet topup API...')
+        const topupData = {
+          userId: userId.value,
+          amount: amount
+        }
         
-        // TODO: Implement your actual add funds API call
-        // await walletService.addFunds(userId.value, amount)
+        console.log('Topup data:', topupData)
+        const topupResponse = await walletService.topup(topupData)
+        console.log('Topup response:', topupResponse)
+
+        // Extract transaction or reference ID from topup response if available
+        const transactionRef = topupResponse.transactionId || 
+                              topupResponse.TransactionId || 
+                              topupResponse.data?.transactionId ||
+                              topupResponse.data?.TransactionId ||
+                              `WALLET-${userId.value}-${Date.now()}`
+
+        // Step 2: Create payment data
+        const now = new Date()
+        const walletId = systemWallet.value?.walletId || 'system-wallet'
         
-        // For now, just update locally and show success
-        balance.value += amount
+        const paymentData = {
+          amount: amount,
+          description: `Add ₵${amount} to Boxxis Wallet - ${now.toLocaleString()}`,
+          themeId: walletId,
+          clientReference: transactionRef
+        }
+
+        console.log('Payment data:', paymentData)
+
+        // Step 3: Initiate payment with Hubtel
+        console.log('Step 2: Initiating payment...')
+        const paymentResponse = await paymentService.initiatePayment(paymentData)
+
+        console.log('Payment response:', paymentResponse)
+
+        // Extract checkout URL
+        const checkoutUrl = paymentResponse.checkoutUrl || 
+                           paymentResponse.data?.checkoutUrl
+
+        if (!checkoutUrl) {
+          throw new Error('Failed to get payment URL from payment response')
+        }
+
+        console.log('Payment URL:', checkoutUrl)
+
+        // Step 3: Close popover and show redirect message
+        isOpen.value = false
+        
         toast({
-          title: 'Success',
-          description: `₵${amount} added to your wallet!`
+          title: 'Redirecting to Payment... 💳',
+          description: `Please complete your ₵${amount} payment to add funds to your wallet.`,
         })
-        
-        // Optionally refresh the wallet data from server
-        await fetchWallet()
+
+        console.log('Redirecting to:', checkoutUrl)
+
+        // Step 4: Redirect to Hubtel payment page
+        setTimeout(() => {
+          window.location.replace(checkoutUrl)
+        }, 1500)
+
       } catch (error) {
-        console.error('Failed to add funds:', error)
+        console.error('Failed to initiate payment:', error)
+        
+        const errorMessage = error.response?.data?.message || 
+                           error.message || 
+                           'Failed to initiate payment'
+        
         toast({
-          title: 'Error',
-          description: 'Failed to add funds',
+          title: 'Payment Failed',
+          description: errorMessage,
           variant: 'destructive'
         })
       } finally {
         addingFunds.value = false
+        selectedAmount.value = null
       }
     }
 
@@ -286,6 +362,7 @@ export default {
       isOpen,
       loading,
       addingFunds,
+      selectedAmount,
       earnedCommission,
       monthlySpent,
       showLoginModal,

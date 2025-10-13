@@ -160,13 +160,19 @@
                     <div class="flex items-center gap-3">
                       <div :class="`p-2 rounded-full ${transaction.type === 'credit' ? 'bg-green-100' : 'bg-red-100'}`">
                         <component 
-                          :is="transaction.type === 'credit' ? ArrowDownCircle : ArrowUpCircle"
+                          :is="transaction.type === 'credit' ? 'ArrowDownCircle' : 'ArrowUpCircle'"
                           :class="`h-4 w-4 ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`"
                         />
+
+
+                        <!-- <component 
+                          :is="transaction.type === 'credit' ? ArrowDownCircle : ArrowUpCircle"
+                          :class="`h-4 w-4 ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`"
+                        /> -->
                       </div>
                       <div>
                         <p class="font-medium text-sm">{{ transaction.description || 'Transaction' }}</p>
-                        <p class="text-xs text-muted-foreground">{{ formatDate(transaction.date) }}</p>
+                        <p class="text-xs text-muted-foreground">{{ formatDate(transaction.transactionDate) }}</p>
                       </div>
                     </div>
                     <p :class="`font-bold text-sm ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`">
@@ -245,7 +251,7 @@
                   <p class="text-sm text-muted-foreground">Total Earned</p>
                 </div>
                 <div class="text-center p-3 bg-[#A3E635]/10 rounded-lg">
-                  <p class="text-2xl font-bold text-[#A3E635]">₵{{ thisMonth.toFixed(2) }}</p>
+                  <p class="text-2xl font-bold text-[#A3E635]">₵{{ authStore.user?.earnedCommission?.toFixed(2) }}</p>
                   <p class="text-sm text-muted-foreground">This Month</p>
                 </div>
               </div>
@@ -263,7 +269,7 @@
 
               <div class="pt-2 border-t">
                 <p class="text-xs text-muted-foreground text-center">
-                  Earn 5% commission on every successful referral
+                  Earn up to 50% of profit as commission on every successful referral purchase
                 </p>
               </div>
             </CardContent>
@@ -478,8 +484,29 @@ export default {
     }
 
     const formatDate = (dateString) => {
-      const date = new Date(dateString)
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      if (!dateString) return 'N/A'
+      
+      try {
+        // Parse the date string - handles ISO format with timezone
+        const date = new Date(dateString)
+        
+        // Check if date is valid
+        if (isNaN(date.getTime())) {
+          return 'Invalid Date'
+        }
+        
+        // Format the date
+        return date.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'short', 
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      } catch (error) {
+        console.error('Error formatting date:', error)
+        return 'Invalid Date'
+      }
     }
 
     const getOrderStatusColor = (status) => {

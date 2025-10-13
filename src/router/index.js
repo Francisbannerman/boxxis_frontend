@@ -57,6 +57,68 @@ const routes = [
       title: 'Order Confirmed - Boxxis' 
     }
   },
+  {
+    path: '/orderfailedpayment',
+    name: 'OrderFailedPayment',
+    component: () => import('@/views/OrderFailedPayment.vue'),
+    meta: { 
+      requiresAuth: true,
+      title: 'Order Failed - Boxxis' 
+    }
+  },
+  {
+    path: '/orders',
+    name: 'Orders',
+    component: () => import('@/views/Orders.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/transactions',
+    name: 'Transactions',
+    component: () => import('@/views/Transactions.vue'),
+    meta: { requiresAuth: true }
+  },
+
+  {
+    path: '/about',
+    name: 'AboutUs',
+    component: () => import('@/views/AboutUs.vue')
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: () => import('@/views/Contact.vue')
+  },
+  {
+    path: '/faqs',
+    name: 'FAQs',
+    component: () => import('@/views/FAQs.vue')
+  },
+  {
+    path: '/import-guide',
+    name: 'ImportGuide',
+    component: () => import('@/views/ImportGuide.vue')
+  },
+  {
+    path: '/delivery-info',
+    name: 'DeliveryInfo',
+    component: () => import('@/views/DeliveryInfo.vue')
+  },
+  {
+    path: '/quality-guarantee',
+    name: 'QualityGuarantee',
+    component: () => import('@/views/QualityGuarantee.vue')
+  },
+  {
+    path: '/privacy-policy',
+    name: 'PrivacyPolicy',
+    component: () => import('@/views/PrivacyPolicy.vue')
+  },
+  {
+    path: '/terms',
+    name: 'Terms',
+    component: () => import('@/views/Terms.vue')
+  }
 ]
 
 const router = createRouter({

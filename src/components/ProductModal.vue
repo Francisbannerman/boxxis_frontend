@@ -54,14 +54,14 @@
                 v-if="product.originalPrice"
                 class="text-xl text-muted-foreground line-through"
               >
-                ${{ product.originalPrice }}
+                GH₵{{ product.originalPrice }}
               </span>
             </div>
             <p 
               v-if="product.isOnSale && product.originalPrice"
               class="text-sm text-[#A3E635] font-medium"
             >
-              You save ${{ (product.originalPrice - product.price).toFixed(2) }}
+              You save GH₵{{ (product.originalPrice - product.price).toFixed(2) }}
             </p>
           </div>
 
@@ -125,19 +125,18 @@
             <div>
               <h4 class="font-medium mb-2">Product Details</h4>
               <ul class="space-y-1 text-muted-foreground">
-                <li>• Premium quality materials</li>
-                <li>• Comfortable fit</li>
-                <li>• Easy care instructions</li>
-                <li>• Available in multiple colors</li>
+                <li>• {{ product.description }}</li>
               </ul>
             </div>
 
             <div>
-              <h4 class="font-medium mb-2">Shipping & Returns</h4>
+              <h4 class="font-medium mb-2"> Available For Delivery </h4>
               <ul class="space-y-1 text-muted-foreground">
-                <li>• Free shipping on orders over $100</li>
+                <li>• Delivery within 48hours</li>
                 <li>• 30-day return policy</li>
-                <li>• Ships within 2-3 business days</li>
+                <li>• United Kingdom standard quality</li>
+                <li>• More affordable than Accra prices</li>
+                <li>• Earn commissions on every purchase</li>
               </ul>
             </div>
           </div>
