@@ -133,6 +133,29 @@ const router = createRouter({
   }
 })
 
+// ============================================================
+// PAYMENT RETURN URL FIXER - Must run BEFORE auth guard
+// ============================================================
+router.beforeEach((to, from, next) => {
+  const checkoutId = to.query.checkoutid
+  
+  // Fix malformed payment gateway return URLs
+  if (checkoutId && 
+      to.path.includes('order-success') && 
+      to.path !== '/order-success') {
+    
+    console.log('Malformed payment return URL detected:', to.path)
+    console.log('Redirecting to clean /order-success')
+    next({
+      path: '/order-success',
+      query: to.query // Preserve all query parameters
+    })
+    return
+  }
+  
+  next()
+})
+
 export const setupAuthGuard = (router) => {
   router.beforeEach((to, from, next) => {
     const authStore = useAuthStore()
