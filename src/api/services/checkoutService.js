@@ -24,7 +24,8 @@ class CheckoutService {
         deliveryLocation: checkoutData.deliveryLocation,
         gpsLocation: checkoutData.gpsLocation || null,
         deliveryNote: checkoutData.deliveryNote || null,
-        alternateNumber: checkoutData.alternateNumber || null
+        alternateNumber: checkoutData.alternateNumber || null,
+        paymentMethod: checkoutData.paymentMethod || 'HubtelPayment' // ✅ ADD THIS LINE
       }
 
       const data = await apiClient.post('/Checkout/create_checkout', payload)
