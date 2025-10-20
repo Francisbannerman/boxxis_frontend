@@ -53,7 +53,7 @@
             <Bell class="h-5 w-5 text-[#8E44AD]" />
           </div>
           <div class="flex-1">
-            <p class="text-sm font-medium">Welcome to Boxxis!</p>
+            <p class="text-sm font-medium">Welcome to Nu Retail!</p>
             <p class="text-xs text-muted-foreground mt-1">
               Get a referral code and sign up for Boxxis to enjoy quality UK groceries at lower than Accra prices.
             </p>

@@ -207,7 +207,7 @@
         <div class="space-y-2 mb-4">
           <p><strong>Boxxis Ghana Ltd.</strong></p>
           <p>123 Independence Avenue, Accra, Ghana</p>
-          <p>Email: legal@boxxis.com</p>
+          <p>Email: legal@Boxxis.com</p>
           <p>Phone: +233 123 456 789</p>
         </div>
         <Button @click="$router.push('/contact')" class="bg-[#8E44AD] hover:bg-[#8E44AD]/80">

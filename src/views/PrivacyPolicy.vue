@@ -138,7 +138,7 @@
       
       <div class="bg-gradient-to-r from-purple-50 to-lime-50 rounded-lg p-6">
         <div class="space-y-2">
-          <p><strong>Email:</strong> privacy@boxxis.com</p>
+          <p><strong>Email:</strong> privacy@Boxxis.com</p>
           <p><strong>Phone:</strong> +233 123 456 789</p>
           <p><strong>Address:</strong> 123 Independence Avenue, Accra, Ghana</p>
         </div>

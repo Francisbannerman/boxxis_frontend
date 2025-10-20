@@ -61,9 +61,6 @@
             >
               ★
             </span>
-            <!-- <span class="text-xs text-muted-foreground ml-1">
-              ({{ product.reviewCount }})
-            </span> -->
           </div>
         </div>
 
@@ -81,17 +78,22 @@
       </div>
     </CardContent>
   </Card>
+
+  <!-- Login Modal -->
+  <LoginModal v-model:open="showLoginModal" @success="handleLoginSuccess" />
 </template>
 
 <script>
 import { ref, computed } from 'vue'
 import { Heart, Plus } from 'lucide-vue-next'
 import { useCartStore } from '@/store/cart'
+import { useAuthStore } from '@/store/auth'
 import { useToast } from '@/components/ui/toast/use-toast'
 import Button from './ui/button.vue'
 import { Card, CardContent } from './ui/card'
 import Badge from './ui/badge.vue'
 import ImageWithFallback from './figma/ImageWithFallback.vue'
+import LoginModal from './LoginModal.vue'
 
 export default {
   name: 'ProductCard',
@@ -102,7 +104,8 @@ export default {
     Card,
     CardContent,
     Badge,
-    ImageWithFallback
+    ImageWithFallback,
+    LoginModal
   },
   props: {
     product: {
@@ -121,10 +124,13 @@ export default {
     }
   },
   emits: ['productClick'],
-  setup(props, { emit }) {
+  setup(props) {
     const cartStore = useCartStore()
+    const authStore = useAuthStore()
     const { toast } = useToast()
     const isAddingToCart = ref(false)
+    const showLoginModal = ref(false)
+    const pendingProduct = ref(null)
 
     const discountPercentage = computed(() => {
       return props.product.originalPrice 
@@ -136,6 +142,18 @@ export default {
       event.stopPropagation()
       
       if (isAddingToCart.value) return
+
+      // Check authentication first
+      if (!authStore.isAuthenticated) {
+        pendingProduct.value = props.product
+        showLoginModal.value = true
+        toast({
+          title: 'Login Required',
+          description: 'Please login to add items to cart',
+          variant: 'destructive'
+        })
+        return
+      }
       
       isAddingToCart.value = true
       
@@ -157,10 +175,40 @@ export default {
       }
     }
 
+    const handleLoginSuccess = async () => {
+      toast({
+        title: 'Welcome! 🎉',
+        description: 'Successfully logged in'
+      })
+
+      // Auto-add the pending product after login
+      if (pendingProduct.value) {
+        isAddingToCart.value = true
+        try {
+          await cartStore.addToCart(pendingProduct.value.id, 1)
+          toast({
+            title: 'Added to cart!',
+            description: `${pendingProduct.value.name} has been added to your cart.`,
+          })
+        } catch (error) {
+          toast({
+            title: 'Error',
+            description: error.message || 'Failed to add item to cart',
+            variant: 'destructive',
+          })
+        } finally {
+          isAddingToCart.value = false
+          pendingProduct.value = null
+        }
+      }
+    }
+
     return {
       discountPercentage,
       isAddingToCart,
-      handleAddToCart
+      showLoginModal,
+      handleAddToCart,
+      handleLoginSuccess
     }
   }
 }

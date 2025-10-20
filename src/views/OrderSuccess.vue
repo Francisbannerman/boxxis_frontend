@@ -58,8 +58,8 @@
           <div class="mt-8 pt-6 border-t">
             <p class="text-sm text-gray-500">
               Need help? Contact us at 
-              <a href="mailto:support@boxxis.com" class="text-[#8E44AD] hover:underline">
-                support@boxxis.com
+              <a href="mailto:support@Boxxis.com" class="text-[#8E44AD] hover:underline">
+                support@Boxxis.com
               </a>
             </p>
           </div>

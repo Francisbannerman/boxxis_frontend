@@ -10,7 +10,7 @@
         <WalletIcon class="h-4 w-4" />
         <span class="hidden sm:inline">{{ formatCurrency(balance) }}</span>
         <Badge class="bg-[#8E44AD] hover:bg-[#8E44AD]/80 text-white ml-1">
-          Boxxis
+          Nu Retail
         </Badge>
       </Button>
     </PopoverTrigger>
@@ -20,7 +20,7 @@
           <CardTitle class="flex items-center gap-2">
             <WalletIcon class="h-5 w-5 text-[#8E44AD]" />
             <span class="bg-gradient-to-r from-[#8E44AD] to-[#A3E635] bg-clip-text text-transparent">
-              Boxxis Balance
+              Nu Retail Balance
             </span>
           </CardTitle>
         </CardHeader>
@@ -30,7 +30,7 @@
             <WalletIcon class="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <h3 class="font-semibold mb-2">Login to View Wallet</h3>
             <p class="text-sm text-muted-foreground mb-4">
-              Sign in to access your Boxxis wallet and manage your funds
+              Sign in to access your Nu Retail wallet and manage your funds
             </p>
             <Button 
               @click="openLoginModal"
@@ -59,7 +59,7 @@
               <p class="text-sm font-medium">Quick Add Funds</p>
               <div class="grid grid-cols-3 gap-2">
                 <Button
-                  v-for="amount in [10, 25, 50]"
+                  v-for="amount in [1, 25, 50]"
                   :key="amount"
                   variant="outline"
                   size="sm"
@@ -290,7 +290,7 @@ export default {
         
         const paymentData = {
           amount: amount,
-          description: `Add ₵${amount} to Boxxis Wallet - ${now.toLocaleString()}`,
+          description: `Add ₵${amount} to Nu Retail Wallet - ${now.toLocaleString()}`,
           themeId: walletId,
           clientReference: transactionRef
         }

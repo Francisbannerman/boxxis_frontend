@@ -159,7 +159,9 @@ export const authService = {
    */
   async getUserProfile(userId) {
     try {
-      const response = await apiClient.get(`/User/get/${userId}`)
+      const response = await apiClient.get(`/User/get?id=${userId}`)
+      http://localhost:5251/api/User/get?id=41773397-5b8c-4530-ab52-7aa895179c06
+
       return response
     } catch (error) {
       console.error('Get user profile error:', error)

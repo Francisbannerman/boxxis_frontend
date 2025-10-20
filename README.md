@@ -1,4 +1,4 @@
-BOXXIS
+Boxxis
 
 # Vue 3 + Vite
 

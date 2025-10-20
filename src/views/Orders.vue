@@ -6,7 +6,7 @@
         <Button 
           variant="ghost" 
           class="mb-4 text-[#8E44AD] hover:bg-[#8E44AD] hover:text-white"
-          @click="$router.back()"
+          @click="$router.push('/')"
         >
           <ArrowLeft class="h-4 w-4 mr-2" />
           Back
@@ -80,10 +80,10 @@
               </div>
               <div class="text-right">
                 <p class="text-2xl font-bold text-[#8E44AD]">
-                  ₵{{ order.totalAmount?.toFixed(2) || '0.00' }}
+                  ₵{{ order.orderAmount?.toFixed(2) || '0.00' }}
                 </p>
                 <Badge variant="outline" class="mt-1">
-                  {{ order.paymentStatus || 'Pending' }}
+                  {{ getOrderTransactionText(order.transactionStatus) || 'Pending' }}
                 </Badge>
               </div>
             </div>
@@ -184,12 +184,11 @@ const selectedStatus = ref('all')
 
 const orderStatuses = [
   { value: 'all', label: 'All Orders' },
-  { value: 0, label: 'Order Received' },
-  { value: 1, label: 'Processing' },
-  { value: 2, label: 'Packed' },
-  { value: 3, label: 'Shipped' },
-  { value: 4, label: 'Delivered' },
-  { value: 5, label: 'Cancelled' }
+  { value: 1, label: 'Order Received' },
+  { value: 2, label: 'Order Processing' },
+  { value: 3, label: 'Order Dispatched' },
+  { value: 4, label: 'Order Delivered' },
+  { value: 5, label: 'Order Cancelled' }
 ]
 
 const filteredOrders = computed(() => {
@@ -235,19 +234,30 @@ const getOrderStatusColor = (status) => {
 
 const getOrderStatusText = (status) => {
   const statusText = {
-    0: 'Order Received',
-    1: 'Processing',
-    2: 'Packed',
-    3: 'Shipped',
-    4: 'Delivered',
-    5: 'Cancelled'
+    1: 'Order Received',
+    2: 'Order Processing',
+    3: 'Order Dispatched',
+    4: 'Order Delivered',
+    5: 'Order Cancelled'
   }
-  
+  return statusText[status] || 'Unknown'
+}
+
+const getOrderTransactionText = (status) => {
+  const statusText = {
+    1: 'Payment Pending',
+    2: 'Payment Processing',
+    3: 'Paid',
+    4: 'Payment Failed',
+    5: 'Payment Cancelled',
+    6: 'Payment Reversed'
+  }
   return statusText[status] || 'Unknown'
 }
 
 const viewOrderDetails = (order) => {
-  // Navigate to order details page (create this later if needed)
+  router.push(`/orders/${order.checkoutId || order.id}`)
+  // router.push(`/orders/${orderId}`)
   toast.info('Order details coming soon')
 }
 

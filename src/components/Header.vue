@@ -36,7 +36,7 @@
           </Sheet>
           
           <h1 class="text-2xl font-bold bg-gradient-to-r from-[#8E44AD] to-[#A3E635] bg-clip-text text-transparent">
-            Boxxis
+            Nu Retail
           </h1>
         </div>
 

@@ -137,53 +137,68 @@
                   @click="viewAllTransactions"
                   class="text-[#8E44AD] hover:bg-[#8E44AD] hover:text-white"
                 >
-                  View More
+                  View All
                 </Button>
               </CardTitle>
             </CardHeader>
             <CardContent class="space-y-3">
               <div v-if="loadingTransactions" class="text-center py-4">
-                <p class="text-sm text-muted-foreground">Loading...</p>
+                <div class="h-8 w-8 mx-auto border-4 border-[#8E44AD] border-t-transparent rounded-full animate-spin"></div>
               </div>
               
-              <p v-else-if="transactions.length === 0" class="text-center text-muted-foreground py-4 text-sm">
+              <p v-else-if="transactions.length === 0" class="text-center text-muted-foreground py-8 text-sm">
                 No transactions yet
               </p>
               
               <div v-else>
                 <div 
-                  v-for="(transaction, index) in transactions" 
+                  v-for="(transaction, index) in transactions.slice(0, 3)" 
                   :key="transaction.id"
                   class="space-y-2"
                 >
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                      <div :class="`p-2 rounded-full ${transaction.type === 'credit' ? 'bg-green-100' : 'bg-red-100'}`">
-                        <component 
-                          :is="transaction.type === 'credit' ? 'ArrowDownCircle' : 'ArrowUpCircle'"
-                          :class="`h-4 w-4 ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`"
-                        />
-
-
-                        <!-- <component 
-                          :is="transaction.type === 'credit' ? ArrowDownCircle : ArrowUpCircle"
-                          :class="`h-4 w-4 ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`"
-                        /> -->
+                  <div class="flex items-center justify-between gap-3">
+                    <!-- Type Badge with Icon -->
+                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                      <div 
+                        :class="`p-2 rounded-lg border ${transaction.typeColor}`"
+                      >
+                        <span class="text-xs font-bold">{{ transaction.typeAcronym }}</span>
                       </div>
-                      <div>
-                        <p class="font-medium text-sm">{{ transaction.description || 'Transaction' }}</p>
-                        <p class="text-xs text-muted-foreground">{{ formatDate(transaction.transactionDate) }}</p>
+                      
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                          <p class="font-medium text-sm truncate">{{ transaction.typeText }}</p>
+                          <Badge 
+                            :class="transaction.statusColor"
+                            class="text-xs px-1.5 py-0"
+                            v-if="transaction.transactionStatus !== 2"
+                          >
+                            {{ transaction.statusText }}
+                          </Badge>
+                        </div>
+                        <p class="text-xs text-muted-foreground">
+                          {{ formatDate(transaction.transactionDate) }}
+                        </p>
                       </div>
                     </div>
-                    <p :class="`font-bold text-sm ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`">
-                      {{ transaction.type === 'credit' ? '+' : '-' }}₵{{ transaction.amount.toFixed(2) }}
-                    </p>
+                    
+                    <!-- Amount with Direction Icon -->
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                      <component 
+                        :is="transaction.type === 'credit' ? ArrowDownCircle : ArrowUpCircle"
+                        :class="`h-4 w-4 ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`"
+                      />
+                      <p :class="`font-bold text-sm ${transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'}`">
+                        ₵{{ transaction.amount.toFixed(2) }}
+                      </p>
+                    </div>
                   </div>
-                  <Separator v-if="index < transactions.length - 1" />
+                  <Separator v-if="index < Math.min(transactions.length, 3) - 1" />
                 </div>
               </div>
             </CardContent>
           </Card>
+
 
           <!-- Past Orders Section -->
           <Card>
@@ -222,7 +237,7 @@
                     <div class="flex items-center justify-between mb-1">
                       <p class="font-medium text-sm">Order #{{ order.id.slice(0, 8) }}</p>
                       <Badge :class="`text-xs ${getOrderStatusColor(order.status)}`">
-                        {{ order.status }}
+                        {{ order.status === 4 ? 'Delivered' : order.status === 5 ? 'Cancelled' : order.status }}
                       </Badge>
                     </div>
                     <div class="flex items-center justify-between text-xs text-muted-foreground">
@@ -564,8 +579,10 @@ export default {
       userInitials,
       transactions,
       loadingTransactions,
-      orders,  // This is now computed from store
-      loading, // This is from orderStore.loading
+      orders,
+      ArrowUpCircle,
+      ArrowDownCircle,
+      loading,
       thisMonth,
       referrals,
       authStore,

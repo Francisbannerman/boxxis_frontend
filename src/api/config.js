@@ -7,7 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://hammerhead-ap
 // Export configuration for axios
 export const config = {
   baseURL: API_BASE_URL,
-  timeout: 30000, // 10 seconds
+  timeout: 30000, // 30 seconds
   headers: {
     'Content-Type': 'application/json',
   }
@@ -21,7 +21,7 @@ export const endpoints = {
     login: '/auth/login',
     register: '/auth/register',
     logout: '/auth/logout',
-    refreshToken: '/auth/refresh',
+    refreshToken: '/Auth/refresh-token',
     getUserByContact: '/User/get-with-contact',
     sendOtp: '/User/send-otp',
     verifyAndLogin: '/User/verify-and-login',

@@ -9,7 +9,7 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Brand -->
         <div class="space-y-4">
-          <h3 class="text-lg font-bold bg-gradient-to-r from-[#8E44AD] to-[#A3E635] bg-clip-text text-transparent">Boxxis</h3>
+          <h3 class="text-lg font-bold bg-gradient-to-r from-[#8E44AD] to-[#A3E635] bg-clip-text text-transparent">Nu Retail</h3>
           <p class="text-sm text-muted-foreground">
             Premium international groceries at competitive prices. 
             Quality imports, better deals than local Ghana markets.
@@ -84,7 +84,7 @@
 
       <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
         <p class="text-sm text-muted-foreground">
-          © 2024 Boxxis. All rights reserved.
+          © 2024 Nu Retail. All rights reserved.
         </p>
         <div class="flex space-x-6 text-sm">
           <router-link to="/privacy-policy" class="text-muted-foreground hover:text-[#8E44AD] transition-colors">

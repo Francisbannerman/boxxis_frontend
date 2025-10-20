@@ -318,13 +318,32 @@
                 </div>
                 <div v-else class="flex items-center gap-2">
                   <CheckCircle class="h-4 w-4" />
-                  Proceed to Payment
+                  Pay With Mobile Money
                 </div>
               </Button>
 
-              <p class="text-xs text-center text-muted-foreground">
+              <!-- <p class="text-xs text-center text-muted-foreground">
                 You will be redirected to Hubtel for secure payment
+              </p> -->
+
+              <Button
+                class="w-full bg-[#8E44AD] hover:bg-[#8E44AD]/80"
+                @click="handleBoxxisPayment"
+                :disabled="!isFormValid || placingOrder"
+              >
+                <div v-if="placingOrder" class="flex items-center gap-2">
+                  <div class="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Processing...
+                </div>
+                <div v-else class="flex items-center gap-2">
+                  <Wallet class="h-4 w-4" />
+                  Pay With Boxxis Wallet
+                </div>
+              </Button>
+              <p class="text-xs text-center text-muted-foreground">
+                Enjoy 10% discount when you pay with Boxxis Wallet 
               </p>
+
             </CardContent>
           </Card>
         </div>
@@ -342,7 +361,8 @@ import {
   ShoppingBag, 
   Calendar, 
   Navigation,
-  CheckCircle
+  CheckCircle,
+  Wallet
 } from 'lucide-vue-next'
 import Button from '@/components/ui/button.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -364,6 +384,7 @@ export default {
     Calendar,
     Navigation,
     CheckCircle,
+    Wallet,
     Button,
     Card,
     CardContent,
@@ -450,6 +471,39 @@ export default {
       )
     }
 
+    const handleBoxxisPayment = async () => {
+      if (!isFormValid.value) {
+        toast({ title: 'Incomplete Form', description: 'Please fill in all required fields', variant: 'destructive' })
+        return
+      }
+
+      if (cartStore.isEmpty) {
+        toast({ title: 'Empty Cart', description: 'Your cart is empty', variant: 'destructive' })
+        router.push('/')
+        return
+      }
+
+      const orderData = {
+        total: cartStore.total,
+        deliveryDetails: deliveryForm.value,
+        items: cartStore.cartItems.map(item => ({
+          id: item.id,
+          name: item.name,
+          image: item.image,
+          price: item.price,
+          quantity: item.quantity
+        })),
+        cartId: null,
+        checkoutId: null
+      }
+      localStorage.setItem('pendingOrder', JSON.stringify(orderData))
+
+      router.replace({
+        name: 'BoxxisPayment',
+        state: { orderData }
+      })
+    }
+
     // Handle order placement and payment
     const handlePlaceOrder = async () => {
       console.log('=== PLACE ORDER & PAYMENT CLICKED ===')
@@ -497,7 +551,8 @@ export default {
           deliveryLocation: deliveryForm.value.deliveryLocation,
           gpsLocation: deliveryForm.value.gpsLocation || null,
           deliveryNote: deliveryForm.value.deliveryNote || null,
-          alternateNumber: deliveryForm.value.alternateNumber || null
+          alternateNumber: deliveryForm.value.alternateNumber || null,
+          paymentMethod: 'HubtelPayment'
         }
 
         const checkoutResponse = await checkoutService.createCheckout(checkoutData)
@@ -505,9 +560,7 @@ export default {
         console.log('Checkout created:', checkoutResponse)
 
         // Extract checkout/order ID
-        const checkoutId = checkoutResponse.checkoutId || 
-                          checkoutResponse.orderId || 
-                          checkoutResponse.data?.checkoutId
+        const checkoutId = checkoutResponse.checkoutId
 
         if (!checkoutId) {
           throw new Error('Failed to get order ID from checkout response')
@@ -629,7 +682,8 @@ export default {
       isFormValid,
       formatDate,
       getGPSLocation,
-      handlePlaceOrder
+      handlePlaceOrder,
+      handleBoxxisPayment,
     }
   }
 }

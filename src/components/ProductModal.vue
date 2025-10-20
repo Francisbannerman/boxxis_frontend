@@ -49,7 +49,7 @@
 
           <div class="space-y-2">
             <div class="flex items-center gap-3">
-              <span class="text-3xl font-bold">${{ product.price }}</span>
+              <span class="text-3xl font-bold">GH₵{{ product.price }}</span>
               <span 
                 v-if="product.originalPrice"
                 class="text-xl text-muted-foreground line-through"
@@ -144,12 +144,16 @@
       </div>
     </DialogContent>
   </Dialog>
+
+  <!-- Login Modal -->
+  <LoginModal v-model:open="showLoginModal" @success="handleLoginSuccess" />
 </template>
 
 <script>
 import { ref, computed, watch } from 'vue'
 import { Heart, ShoppingCart, Star } from 'lucide-vue-next'
 import { useCartStore } from '@/store/cart'
+import { useAuthStore } from '@/store/auth'
 import { useToast } from '@/components/ui/toast/use-toast'
 import Button from './ui/button.vue'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
@@ -157,6 +161,7 @@ import Badge from './ui/badge.vue'
 import Separator from './ui/separator.vue'
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from './ui/select'
 import ImageWithFallback from './figma/ImageWithFallback.vue'
+import LoginModal from './LoginModal.vue'
 
 export default {
   name: 'ProductModal',
@@ -176,7 +181,8 @@ export default {
     SelectItem,
     SelectTrigger,
     SelectValue,
-    ImageWithFallback
+    ImageWithFallback,
+    LoginModal
   },
   props: {
     product: {
@@ -191,11 +197,14 @@ export default {
   emits: ['close'],
   setup(props, { emit }) {
     const cartStore = useCartStore()
+    const authStore = useAuthStore()
     const { toast } = useToast()
     
     const selectedSize = ref('')
     const quantity = ref(1)
     const isAddingToCart = ref(false)
+    const showLoginModal = ref(false)
+    const pendingAddToCart = ref(null)
 
     const discountPercentage = computed(() => {
       if (!props.product || !props.product.originalPrice) return 0
@@ -214,6 +223,22 @@ export default {
       
       // Only require size selection if product has variants
       if (props.product.hasVariants && !selectedSize.value) return
+
+      // Check authentication first
+      if (!authStore.isAuthenticated) {
+        pendingAddToCart.value = {
+          productId: props.product.id,
+          quantity: quantity.value,
+          size: selectedSize.value
+        }
+        showLoginModal.value = true
+        toast({
+          title: 'Login Required',
+          description: 'Please login to add items to cart',
+          variant: 'destructive'
+        })
+        return
+      }
       
       isAddingToCart.value = true
       
@@ -244,6 +269,47 @@ export default {
       }
     }
 
+    const handleLoginSuccess = async () => {
+      toast({
+        title: 'Welcome! 🎉',
+        description: 'Successfully logged in'
+      })
+
+      // Auto-add the pending product after login
+      if (pendingAddToCart.value) {
+        isAddingToCart.value = true
+        try {
+          await cartStore.addToCart(
+            pendingAddToCart.value.productId, 
+            pendingAddToCart.value.quantity
+          )
+          
+          const description = props.product.hasVariants 
+            ? `${pendingAddToCart.value.quantity} x ${props.product.name} (Size: ${pendingAddToCart.value.size})`
+            : `${pendingAddToCart.value.quantity} x ${props.product.name}`
+          
+          toast({
+            title: 'Added to cart!',
+            description,
+          })
+
+          // Close modal after successful add
+          setTimeout(() => {
+            emit('close')
+          }, 500)
+        } catch (error) {
+          toast({
+            title: 'Error',
+            description: error.message || 'Failed to add item to cart',
+            variant: 'destructive',
+          })
+        } finally {
+          isAddingToCart.value = false
+          pendingAddToCart.value = null
+        }
+      }
+    }
+
     const handleClose = (value) => {
       if (!value) {
         emit('close')
@@ -256,6 +322,7 @@ export default {
         selectedSize.value = ''
         quantity.value = 1
         isAddingToCart.value = false
+        pendingAddToCart.value = null
       }
     })
 
@@ -265,7 +332,9 @@ export default {
       quantityString,
       discountPercentage,
       isAddingToCart,
+      showLoginModal,
       handleAddToCart,
+      handleLoginSuccess,
       handleClose
     }
   }

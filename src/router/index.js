@@ -73,6 +73,11 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/Boxxis-payment',
+    name: 'BoxxisPayment',
+    component: () => import('@/views/BoxxisPaymentConfirmation.vue')
+  },
+  {
     path: '/transactions',
     name: 'Transactions',
     component: () => import('@/views/Transactions.vue'),

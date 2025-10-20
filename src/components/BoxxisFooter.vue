@@ -1,12 +1,12 @@
 <template>
-  <footer class="boxxis-footer bg-white">
+  <footer class="Boxxis-footer bg-white">
     <v-container>
       <v-row>
         <!-- Boxxis Brand Section -->
         <v-col cols="12" md="3">
           <div class="mb-4">
             <h3 class="text-h6 font-weight-bold mb-3">
-              <span class="text-deep-purple">Box</span><span class="text-lime-accent-3">xis</span>
+              <span class="text-deep-purple">Nu</span><span class="text-lime-accent-3">Retail</span>
             </h3>
             <p class="text-body-2 text-grey-darken-1 mb-3">
               Premium international groceries at competitive prices. Quality imports, better deals than local Ghana markets.
@@ -86,7 +86,7 @@
       <v-divider class="my-4" />
       <div class="footer-bottom d-flex justify-space-between align-center flex-wrap">
         <div class="text-caption text-grey-darken-1">
-          © 2024 Boxxis. All rights reserved.
+          © 2024 Nu Retail. All rights reserved.
         </div>
         <div class="footer-legal d-flex gap-4">
           <span class="text-caption text-grey-darken-1 footer-link">Privacy</span>
@@ -99,7 +99,7 @@
 </template>
 
 <style scoped>
-.boxxis-footer {
+.Boxxis-footer {
   border-top: 1px solid #e0e0e0;
   margin-top: 64px;
   padding: 48px 0 24px;

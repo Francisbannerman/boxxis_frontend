@@ -32,6 +32,16 @@ class PaymentService {
     }
   }
 
+  async BoxxisPay(paymentData) {
+    try {
+      const response = await apiClient.post('/Payment/Boxxis-pay', paymentData)
+      return response
+    } catch (error) {
+      console.error('Boxxis payment error:', error)
+      throw error
+    }
+  }
+
   /**
    * Handle API errors
    * @param {Error} error - The error object
