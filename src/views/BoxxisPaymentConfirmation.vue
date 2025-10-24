@@ -16,10 +16,10 @@
             <Wallet class="h-8 w-8 text-[#A3E635]" />
           </div>
           <h1 class="text-3xl font-bold text-gray-900 mb-2">
-            Confirm Boxxis Wallet Payment
+            Confirm Nu Retail Wallet Payment
           </h1>
           <p class="text-gray-600">
-            Review your order and enjoy 10% discount for paying with Boxxis Wallet
+            Review your order and enjoy 5% discount for paying with Nu Retail Wallet
           </p>
         </div>
       </div>
@@ -37,10 +37,10 @@
               </div>
               <div class="flex-1">
                 <h3 class="font-bold text-lg text-gray-900 mb-1">
-                  🎉 10% Wallet Discount Applied!
+                  🎉 5% Wallet Discount Applied!
                 </h3>
                 <p class="text-sm text-gray-600">
-                  You're saving ₵{{ discountAmount.toFixed(2) }} by paying with your Boxxis Wallet
+                  You're saving ₵{{ discountAmount.toFixed(2) }} by paying with your Nu Retail Wallet
                 </p>
               </div>
             </div>
@@ -169,7 +169,7 @@
               <div class="flex items-center gap-3">
                 <Wallet :class="`h-6 w-6 ${hasEnoughBalance ? 'text-green-600' : 'text-red-600'}`" />
                 <div>
-                  <p class="text-sm text-muted-foreground">Boxxis Wallet Balance</p>
+                  <p class="text-sm text-muted-foreground">Nu Retail Wallet Balance</p>
                   <p class="text-xl font-bold">₵{{ walletBalance.toFixed(2) }}</p>
                 </div>
               </div>
@@ -293,7 +293,7 @@ const orderItems = ref([])
 const checkoutId = ref('')
 
 // Calculate discount and final amount
-const discountAmount = computed(() => orderTotal.value * 0.10)
+const discountAmount = computed(() => orderTotal.value * 0.05)
 const finalAmount = computed(() => orderTotal.value - discountAmount.value)
 const hasEnoughBalance = computed(() => 
   walletBalance.value !== null && walletBalance.value >= finalAmount.value

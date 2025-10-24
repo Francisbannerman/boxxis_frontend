@@ -11,7 +11,7 @@
             <Mail class="w-5 h-5 text-[#8E44AD] mt-1" />
             <div>
               <p class="font-medium">Email</p>
-              <a href="mailto:support@Boxxis.com" class="text-[#8E44AD] hover:underline">support@Boxxis.com</a>
+              <a href="mailto:support@Boxxis.com" class="text-[#8E44AD] hover:underline">support@NuRetail.com</a>
             </div>
           </div>
 

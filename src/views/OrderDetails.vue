@@ -295,7 +295,7 @@
 
             <!-- Action Buttons -->
             <div class="space-y-3">
-              <Button 
+              <!-- <Button 
                 class="w-full bg-[#8E44AD] hover:bg-[#8E44AD]/90 text-white"
                 @click="trackOrder"
               >
@@ -311,7 +311,7 @@
               >
                 <XCircle class="h-4 w-4 mr-2" />
                 Cancel Order
-              </Button>
+              </Button> -->
               
               <Button 
                 variant="outline"
@@ -327,6 +327,60 @@
       </div>
     </div>
   </div>
+
+  <!-- Add this Dialog component anywhere in your template -->
+  <Dialog v-model:open="showSupportDialog">
+    <DialogContent class="sm:max-w-md">
+      <DialogHeader>
+        <DialogTitle>Contact Support</DialogTitle>
+        <DialogDescription>
+          Need help with your order?
+        </DialogDescription>
+      </DialogHeader>
+      
+      <div class="flex flex-col items-center justify-center py-6 space-y-4">
+        <div class="w-16 h-16 rounded-full bg-[#8E44AD]/10 flex items-center justify-center">
+          <Phone class="h-8 w-8 text-[#8E44AD]" />
+        </div>
+        
+        <div class="text-center space-y-2">
+          <p class="text-sm text-muted-foreground">
+            Call our support team
+          </p>
+          <a 
+            href="tel:0267067953"
+            class="text-2xl font-bold text-[#8E44AD] hover:text-[#8E44AD]/80 transition-colors"
+          >
+            054 943 6471
+          </a>
+        </div>
+        
+        <p class="text-xs text-center text-muted-foreground">
+          Order ID: {{ orderId }}
+        </p>
+      </div>
+      
+      <div class="flex gap-2">
+        <Button 
+          variant="outline" 
+          class="flex-1"
+          @click="showSupportDialog = false"
+        >
+          Close
+        </Button>
+        <Button 
+          class="flex-1 bg-[#8E44AD] hover:bg-[#8E44AD]/90"
+          asChild
+        >
+          <a href="tel:0267067953">
+            <Phone class="h-4 w-4 mr-2" />
+            Call Now
+          </a>
+        </Button>
+      </div>
+    </DialogContent>
+  </Dialog>
+
 </template>
 
 <script setup>
@@ -342,10 +396,12 @@ import Badge from '../components/ui/badge.vue'
 import Separator from '../components/ui/separator.vue'
 import { Avatar, AvatarFallback } from '../components/ui/avatar'
 import { useOrderStore } from '../store/orders'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 const route = useRoute()
 const router = useRouter()
 const orderStore = useOrderStore()
+const showSupportDialog = ref(false)
 
 const loading = ref(true)
 const order = ref(null)
@@ -380,7 +436,7 @@ const orderSteps = computed(() => {
       icon: CheckCircle,
       completed: status >= 1,
       date: formatDate(order.value.dateOfCheckout),
-      description: paymentStatus === 2 ? 'Payment confirmed' : 'Awaiting payment confirmation'
+      description: paymentStatus === 3 ? 'Payment confirmed' : 'Awaiting payment confirmation'
     },
     {
       label: 'Order Processing',
@@ -520,6 +576,7 @@ const cancelOrder = () => {
 }
 
 const contactSupport = () => {
+  showSupportDialog.value = true
   // Implement support contact
   console.log('Contact support for order:', orderId)
 }

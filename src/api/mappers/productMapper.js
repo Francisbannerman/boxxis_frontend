@@ -7,9 +7,9 @@ export const mapProduct = (apiProduct, categories = []) => {
   const isOnSale = apiProduct.promoPrice !== null && apiProduct.promoPrice < apiProduct.sellingPrice
   const currentPrice = isOnSale ? apiProduct.promoPrice : apiProduct.sellingPrice
 
-  // Find matching category name by categoryId
+  // ✅ FIX: Match categoryId correctly
   const matchedCategory = categories.find(cat => cat.id === apiProduct.categoryId)
-  const categoryName = matchedCategory ? matchedCategory.name : 'Uncategorized'
+  const categoryName = matchedCategory ? (matchedCategory.categoryName || matchedCategory.name) : 'Uncategorized'
 
   return {
     id: apiProduct.productId,
@@ -25,7 +25,7 @@ export const mapProduct = (apiProduct, categories = []) => {
       apiProduct.image3
     ].filter(img => img && img !== ''),
     
-    category: categoryName, // Use matched category name
+    category: categoryName, // ✅ This will now have the correct category name
     categoryId: apiProduct.categoryId,
     
     isOnSale: isOnSale,
@@ -41,7 +41,11 @@ export const mapProduct = (apiProduct, categories = []) => {
     variants: apiProduct.variantsList || [],
     
     rating: 4.5,
-    reviewCount: 0
+    reviewCount: 0,
+    
+    // ✅ ADD: Keep original properties for search to work
+    productName: apiProduct.productName,
+    productDescription: apiProduct.productDescription
   }
 }
 
@@ -53,5 +57,10 @@ export const mapProducts = (apiProducts, categories = []) => {
     console.warn('mapProducts received non-array:', apiProducts)
     return []
   }
-  return apiProducts.map(product => mapProduct(product, categories))
+  
+  console.log('Mapping products with categories:', categories) // ✅ DEBUG
+  const mapped = apiProducts.map(product => mapProduct(product, categories))
+  console.log('First mapped product:', mapped[0]) // ✅ DEBUG
+  
+  return mapped
 }

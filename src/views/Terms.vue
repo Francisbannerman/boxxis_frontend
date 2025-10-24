@@ -7,13 +7,13 @@
 
     <div class="prose prose-lg max-w-none">
       <p class="text-lg mb-8">
-        Welcome to Boxxis! These Terms of Service govern your use of our website and services. 
-        By accessing or using Boxxis, you agree to be bound by these terms.
+        Welcome to Nu Retail! These Terms of Service govern your use of our website and services. 
+        By accessing or using Nu Retail, you agree to be bound by these terms.
       </p>
 
       <h2 class="text-2xl font-semibold mt-8 mb-4">1. Acceptance of Terms</h2>
       <p>
-        By creating an account or making a purchase on Boxxis, you acknowledge that you have read, 
+        By creating an account or making a purchase on Nu Retail, you acknowledge that you have read, 
         understood, and agree to be bound by these Terms of Service and our Privacy Policy. If you 
         do not agree, please do not use our services.
       </p>
@@ -145,8 +145,8 @@
 
       <h2 class="text-2xl font-semibold mt-8 mb-4">7. Intellectual Property</h2>
       <p>
-        All content on Boxxis, including text, graphics, logos, images, and software, is the 
-        property of Boxxis or its licensors and is protected by copyright and trademark laws. 
+        All content on Nu Retail, including text, graphics, logos, images, and software, is the 
+        property of Nu Retail or its licensors and is protected by copyright and trademark laws. 
         You may not use, reproduce, or distribute any content without our written permission.
       </p>
 
@@ -155,7 +155,7 @@
       <div class="bg-yellow-50 border border-yellow-300 rounded-lg p-6 mb-4">
         <p class="font-semibold mb-3">Important Legal Information:</p>
         <p class="mb-3">
-          To the maximum extent permitted by law, Boxxis shall not be liable for any indirect, 
+          To the maximum extent permitted by law, Nu Retail shall not be liable for any indirect, 
           incidental, special, consequential, or punitive damages, including loss of profits, 
           data, or other intangible losses.
         </p>
@@ -175,7 +175,7 @@
 
       <h2 class="text-2xl font-semibold mt-8 mb-4">10. Indemnification</h2>
       <p>
-        You agree to indemnify and hold Boxxis harmless from any claims, damages, losses, 
+        You agree to indemnify and hold Nu Retail harmless from any claims, damages, losses, 
         liabilities, and expenses arising from your violation of these terms or your use of 
         our services.
       </p>
@@ -205,9 +205,9 @@
       
       <div class="bg-gradient-to-r from-purple-50 to-lime-50 rounded-lg p-6">
         <div class="space-y-2 mb-4">
-          <p><strong>Boxxis Ghana Ltd.</strong></p>
+          <p><strong>Nu Retail Ghana Ltd.</strong></p>
           <p>123 Independence Avenue, Accra, Ghana</p>
-          <p>Email: legal@Boxxis.com</p>
+          <p>Email: legal@NuRetail.com</p>
           <p>Phone: +233 123 456 789</p>
         </div>
         <Button @click="$router.push('/contact')" class="bg-[#8E44AD] hover:bg-[#8E44AD]/80">
@@ -217,7 +217,7 @@
 
       <div class="mt-8 p-4 bg-blue-50 border-l-4 border-blue-500">
         <p class="text-sm">
-          <strong>Acknowledgment:</strong> By using Boxxis, you acknowledge that you have read 
+          <strong>Acknowledgment:</strong> By using Nu Retail, you acknowledge that you have read 
           and understood these Terms of Service and agree to be bound by them.
         </p>
       </div>

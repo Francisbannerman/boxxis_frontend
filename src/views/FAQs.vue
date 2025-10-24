@@ -73,7 +73,7 @@ export default {
       },
       {
         question: 'How can I track my order?',
-        answer: 'Once your order is shipped, you will receive a tracking number via email and SMS. You can track your order in the "My Orders" section of your account.'
+        answer: 'Once your order is dispatched, you will receive a tracking number via email and SMS. You can track your order in the "My Orders" section of your account.'
       },
       {
         question: 'Do you offer bulk discounts?',

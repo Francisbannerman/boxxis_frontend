@@ -17,8 +17,8 @@
           -{{ discountPercentage }}%
         </Badge>
 
-        <!-- Action Buttons -->
-        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <!-- Action Buttons (Heart) -->
+        <!-- <div class="absolute top-2 right-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
           <Button
             variant="secondary"
             size="icon"
@@ -26,10 +26,10 @@
           >
             <Heart class="h-4 w-4" />
           </Button>
-        </div>
+        </div> -->
 
-        <!-- Quick Add Button -->
-        <div class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <!-- Quick Add Button - ✅ FIXED FOR MOBILE -->
+        <div class="absolute bottom-2 right-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
           <Button
             size="icon"
             class="h-8 w-8 bg-[#8E44AD] hover:bg-[#8E44AD]/80"
@@ -82,6 +82,8 @@
   <!-- Login Modal -->
   <LoginModal v-model:open="showLoginModal" @success="handleLoginSuccess" />
 </template>
+
+<!-- Script stays the same -->
 
 <script>
 import { ref, computed } from 'vue'

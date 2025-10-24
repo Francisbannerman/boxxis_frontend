@@ -65,7 +65,6 @@
       :product="selectedProduct"
       :is-open="!!selectedProduct"
       @close="selectedProduct = null"
-      @add-to-cart="addToCart"
     />
 
     <Toaster />
@@ -127,6 +126,7 @@ export default {
     const categories = computed(() => productsStore.categories)
     
     // Get filtered products (by category AND search)
+    // In ShopPage.vue - Update the filteredProducts computed
     const filteredProducts = computed(() => {
       let products = productsStore.products
 
@@ -138,19 +138,27 @@ export default {
       // Filter by search query
       if (searchQuery.value.trim()) {
         const query = searchQuery.value.toLowerCase().trim()
-        products = products.filter(p => 
-          p.productName?.toLowerCase().includes(query) ||
-          p.productDescription?.toLowerCase().includes(query) ||
-          p.brand?.toLowerCase().includes(query) ||
-          p.manufacturer?.toLowerCase().includes(query)
-        )
+        products = products.filter(p => {
+          // Check all possible property names
+          const productName = (p.productName || p.name || '').toLowerCase()
+          const description = (p.productDescription || p.description || '').toLowerCase()
+          const brand = (p.brand || '').toLowerCase()
+          const manufacturer = (p.manufacturer || '').toLowerCase()
+          
+          return (
+            productName.includes(query) ||
+            description.includes(query) ||
+            brand.includes(query) ||
+            manufacturer.includes(query)
+          )
+        })
       }
-
       return products
     })
 
     // Handle search from header
     const handleSearch = (query) => {
+    
       searchQuery.value = query
       // Reset category when searching
       if (query) {

@@ -55,7 +55,7 @@
           <div class="flex-1">
             <p class="text-sm font-medium">Welcome to Nu Retail!</p>
             <p class="text-xs text-muted-foreground mt-1">
-              Get a referral code and sign up for Boxxis to enjoy quality UK groceries at lower than Accra prices.
+              Get a referral code and sign up for Nu Retail to enjoy quality UK groceries at lower than Accra prices.
             </p>
             <Button 
               variant="default" 

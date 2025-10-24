@@ -8,7 +8,7 @@
       <div class="bg-gradient-to-r from-purple-100 to-lime-100 p-8 rounded-lg mb-8">
         <h2 class="text-2xl font-bold mb-4">Our Quality Promise</h2>
         <p class="text-lg">
-          At Boxxis, we guarantee 100% authentic, high-quality products. If you're not satisfied, 
+          At Nu Retail, we guarantee 100% authentic, high-quality products. If you're not satisfied, 
           we'll make it right - no questions asked.
         </p>
       </div>
@@ -103,7 +103,7 @@
           <div>
             <h3 class="font-semibold text-lg mb-2">Pre-Delivery Check</h3>
             <p class="text-gray-600">
-              Final quality check before packing ensures only perfect products are shipped.
+              Final quality check before packing ensures only perfect products are dispatched.
             </p>
           </div>
         </div>

@@ -1,20 +1,20 @@
 <template>
-  <header class="border-b bg-background sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-4">
-      <div class="flex items-center justify-between">
+  <header class="border-b bg-background sticky top-0 z-50 overflow-x-hidden">
+    <div class="container mx-auto px-2 sm:px-4 py-4 sm:py-5 max-w-full">
+      <div class="flex items-center justify-between gap-2 sm:gap-3">
         <!-- Logo -->
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-2 sm:space-x-3 flex-shrink-0 min-w-0">
           <!-- Mobile Menu -->
           <Sheet v-model:open="mobileMenuOpen">
             <SheetTrigger>
-              <Button variant="ghost" size="icon" class="md:hidden">
-                <Menu class="h-5 w-5" />
+              <Button variant="ghost" size="icon" class="md:hidden h-9 w-9 sm:h-11 sm:w-11">
+                <Menu class="h-5 w-5 sm:h-6 sm:w-6" />
               </Button>
             </SheetTrigger>
             <SheetContent side="left" class="w-80">
               <SheetHeader class="text-left">
                 <SheetTitle class="bg-gradient-to-r from-[#8E44AD] to-[#A3E635] bg-clip-text text-transparent">
-                  Boxxis
+                  Nu Retail
                 </SheetTitle>
               </SheetHeader>
               <div class="py-6 space-y-4">
@@ -28,28 +28,32 @@
                 <div class="w-full">
                   <OrdersDropdown class="w-full justify-start" />
                 </div>
-                <div class="pt-4 border-t">
-                  <Wallet />
+                
+                <!-- Notifications in mobile menu -->
+                <div class="w-full border-t pt-4">
+                  <NotificationsDropdown />
                 </div>
               </div>
             </SheetContent>
           </Sheet>
           
-          <h1 class="text-2xl font-bold bg-gradient-to-r from-[#8E44AD] to-[#A3E635] bg-clip-text text-transparent">
+          <h1 class="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-[#8E44AD] to-[#A3E635] bg-clip-text text-transparent whitespace-nowrap truncate">
             Nu Retail
           </h1>
         </div>
 
         <!-- Navigation - Hidden on mobile -->
         <nav class="hidden md:flex items-center space-x-6">
-          <Button variant="ghost" class="text-[#8E44AD] hover:bg-[#8E44AD] hover:text-white">Home</Button>
+          <Button variant="ghost" class="text-[#8E44AD] hover:bg-[#8E44AD] hover:text-white px-4 py-2">Home</Button>
           <OrdersDropdown />
+
+          <NotificationsDropdown />
         </nav>
 
         <!-- Search Bar - Hidden on mobile -->
         <div class="hidden md:flex items-center flex-1 max-w-md mx-8">
           <div class="relative w-full">
-            <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
               id="header-search"
               name="search"
@@ -58,13 +62,13 @@
               @input="handleSearch"
               placeholder="Search products..."
               autocomplete="off"
-              class="pl-10 border-border focus:border-[#8E44AD] focus:ring-[#8E44AD]"
+              class="pl-10 py-5 border-border focus:border-[#8E44AD] focus:ring-[#8E44AD]"
             />
             <Button
               v-if="searchQuery"
               variant="ghost"
               size="icon"
-              class="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7"
+              class="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8"
               @click="clearSearch"
             >
               <X class="h-4 w-4" />
@@ -73,49 +77,43 @@
         </div>
 
         <!-- Right Actions -->
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          <!-- Search toggle - mobile only -->
           <Button 
             variant="ghost" 
             size="icon" 
-            class="md:hidden"
+            class="md:hidden h-9 w-9 sm:h-11 sm:w-11 p-0"
             @click="showMobileSearch = !showMobileSearch"
           >
-            <Search class="h-5 w-5" />
+            <Search class="h-5 w-5 sm:h-6 sm:w-6" />
           </Button>
           
-          <!-- Mobile Orders Icon -->
-          <div class="md:hidden">
-            <OrdersDropdown>
-              <template #default>
-                <div class="relative">
-                  <Package class="h-5 w-5" />
-                  <Badge 
-                    v-if="activeOrdersCount > 0"
-                    class="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs bg-[#A3E635] text-[#2d1b3d] hover:bg-[#A3E635]/80"
-                  >
-                    {{ activeOrdersCount }}
-                  </Badge>
-                </div>
-              </template>
-            </OrdersDropdown>
+          <!-- Wallet - always visible -->
+          <div class="scale-100">
+            <Wallet />
           </div>
           
-          <Wallet class="hidden sm:flex" />
+          <!-- Notifications - desktop only (in mobile menu) -->
+          <!-- <div class="hidden sm:block">
+            <NotificationsDropdown />
+          </div> -->
           
-          <!-- Notifications Dropdown -->
-          <NotificationsDropdown />
+          <!-- User Profile - always visible -->
+          <div class="scale-100">
+            <UserProfile />
+          </div>
           
-          <UserProfile />
+          <!-- Cart - always visible -->
           <Button 
             variant="ghost" 
             size="icon" 
-            class="relative hover:bg-muted"
+            class="relative hover:bg-muted h-9 w-9 sm:h-11 sm:w-11 p-0"
             @click="$emit('cartClick')"
           >
-            <ShoppingCart class="h-5 w-5" />
+            <ShoppingCart class="h-5 w-5 sm:h-6 sm:w-6" />
             <Badge 
               v-if="authStore.isAuthenticated && cartStore.itemCount > 0"
-              class="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs bg-[#A3E635] text-[#2d1b3d] hover:bg-[#A3E635]/80"
+              class="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 h-5 w-5 sm:h-6 sm:w-6 flex items-center justify-center p-0 text-xs sm:text-sm bg-[#A3E635] text-[#2d1b3d] hover:bg-[#A3E635]/80"
             >
               {{ cartStore.itemCount }}
             </Badge>
@@ -129,7 +127,7 @@
         class="md:hidden mt-4 pb-2"
       >
         <div class="relative w-full">
-          <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input
             id="mobile-search"
             name="search"
@@ -138,13 +136,13 @@
             @input="handleSearch"
             placeholder="Search products..."
             autocomplete="off"
-            class="pl-10 pr-10 border-border focus:border-[#8E44AD] focus:ring-[#8E44AD]"
+            class="pl-10 pr-10 py-5 border-border focus:border-[#8E44AD] focus:ring-[#8E44AD]"
           />
           <Button
             v-if="searchQuery"
             variant="ghost"
             size="icon"
-            class="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7"
+            class="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8"
             @click="clearSearch"
           >
             <X class="h-4 w-4" />

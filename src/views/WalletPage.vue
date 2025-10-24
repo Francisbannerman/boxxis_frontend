@@ -47,7 +47,7 @@
                     <Badge class="bg-[#A3E635] text-[#2d1b3d]">System</Badge>
                   </CardTitle>
                   <p class="text-sm text-muted-foreground mt-1">
-                    {{ systemWallet.description || 'Main Boxxis Wallet' }}
+                    {{ systemWallet.description || 'Main Nu Retail Wallet' }}
                   </p>
                   <p class="text-xs text-muted-foreground mt-1">
                     Account: {{ systemWallet.accountNumber }}
@@ -363,7 +363,7 @@ const addFunds = async (amount) => {
     
     const paymentData = {
       amount: amount,
-      description: `Add ₵${amount} to Boxxis Wallet - ${now.toLocaleString()}`,
+      description: `Add ₵${amount} to Nu Retail Wallet - ${now.toLocaleString()}`,
       themeId: walletId,
       clientReference: transactionRef
     }

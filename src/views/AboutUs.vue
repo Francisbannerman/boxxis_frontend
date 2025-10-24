@@ -1,15 +1,15 @@
 <template>
   <div class="container mx-auto px-4 py-16 max-w-4xl">
-    <h1 class="text-4xl font-bold mb-8 bg-gradient-to-r from-[#8E44AD] to-[#A3E635] bg-clip-text text-transparent">About Boxxis</h1>
+    <h1 class="text-4xl font-bold mb-8 bg-gradient-to-r from-[#8E44AD] to-[#A3E635] bg-clip-text text-transparent">About Nu Retail</h1>
     
     <div class="prose prose-lg max-w-none">
       <p class="text-lg text-gray-600 mb-6">
-        Welcome to Boxxis - Your trusted source for premium international groceries in Ghana.
+        Welcome to Nu Retail - Your trusted source for premium international groceries in Ghana.
       </p>
 
       <h2 class="text-2xl font-semibold mt-8 mb-4">Our Story</h2>
       <p>
-        Founded in 2024, Boxxis was born from a simple observation: quality international products 
+        Founded in 2024, Nu Retail was born from a simple observation: quality international products 
         were either unavailable or prohibitively expensive in the Ghanaian market. We set out to 
         change that by importing high-quality groceries and household items directly from trusted 
         international suppliers.
@@ -22,7 +22,7 @@
         breaking the bank.
       </p>
 
-      <h2 class="text-2xl font-semibold mt-8 mb-4">Why Choose Boxxis?</h2>
+      <h2 class="text-2xl font-semibold mt-8 mb-4">Why Choose Nu Retail?</h2>
       <ul class="list-disc pl-6 space-y-2">
         <li><strong>Better Prices:</strong> Direct imports mean better deals than local markets</li>
         <li><strong>Quality Guaranteed:</strong> Every product is carefully selected and inspected</li>

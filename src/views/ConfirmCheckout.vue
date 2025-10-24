@@ -337,11 +337,11 @@
                 </div>
                 <div v-else class="flex items-center gap-2">
                   <Wallet class="h-4 w-4" />
-                  Pay With Boxxis Wallet
+                  Pay With Nu Retail Wallet
                 </div>
               </Button>
               <p class="text-xs text-center text-muted-foreground">
-                Enjoy 10% discount when you pay with Boxxis Wallet 
+                Enjoy 5% discount when you pay with Nu Retail Wallet 
               </p>
 
             </CardContent>

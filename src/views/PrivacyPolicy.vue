@@ -7,7 +7,7 @@
 
     <div class="prose prose-lg max-w-none">
       <p class="text-lg mb-8">
-        At Boxxis, we are committed to protecting your privacy and ensuring the security of your personal information. 
+        At Nu Retail, we are committed to protecting your privacy and ensuring the security of your personal information. 
         This Privacy Policy explains how we collect, use, and safeguard your data.
       </p>
 
@@ -138,7 +138,7 @@
       
       <div class="bg-gradient-to-r from-purple-50 to-lime-50 rounded-lg p-6">
         <div class="space-y-2">
-          <p><strong>Email:</strong> privacy@Boxxis.com</p>
+          <p><strong>Email:</strong> privacy@NuRetail.com</p>
           <p><strong>Phone:</strong> +233 123 456 789</p>
           <p><strong>Address:</strong> 123 Independence Avenue, Accra, Ghana</p>
         </div>
@@ -149,7 +149,7 @@
 
       <div class="mt-8 p-4 bg-yellow-50 border-l-4 border-yellow-400">
         <p class="text-sm">
-          <strong>Ghana Data Protection Act Compliance:</strong> Boxxis complies with the 
+          <strong>Ghana Data Protection Act Compliance:</strong> Nu Retail complies with the 
           Ghana Data Protection Act, 2012 (Act 843) and regulations issued by the Data 
           Protection Commission.
         </p>

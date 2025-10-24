@@ -58,12 +58,12 @@
         <li>DHL Ghana</li>
         <li>Speedaf Express</li>
         <li>Kwik Delivery</li>
-        <li>Our own Boxxis delivery fleet (Accra only)</li>
+        <li>Our own Nu Retail delivery fleet (Accra only)</li>
       </ul>
 
       <h2 class="text-2xl font-semibold mt-8 mb-4">Tracking Your Order</h2>
       <p>
-        Once shipped, you can track your order using the tracking number provided. 
+        Once dispatched, you can track your order using the tracking number provided. 
         Log into your account and visit "My Orders" section for real-time updates.
       </p>
 
